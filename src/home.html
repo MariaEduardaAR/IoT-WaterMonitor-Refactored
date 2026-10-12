@@ -49,6 +49,8 @@
         text-align: center;
         font-weight: 800;
       }
+
+      .tank-status { text-align: center; font-weight: 700; margin-top: 8px; }
     </style>
   </head>
 
@@ -69,6 +71,7 @@
             style="width: 200px;height:200px; float:left"
           ></div>
           <h2>Tank 1</h2>
+          <p class="tank-status" id="tank1-status" aria-live="polite"></p>
         </div>
         <div class="col-lg-3">
           <div
@@ -76,6 +79,7 @@
             style="width: 200px;height:200px; float:left"
           ></div>
           <h2>Tank 2</h2>
+          <p class="tank-status" id="tank2-status" aria-live="polite"></p>
         </div>
         <div class="col-lg-3">
           <div
@@ -83,6 +87,7 @@
             style="width: 200px;height:200px; float:left"
           ></div>
           <h2>Tank 3</h2>
+          <p class="tank-status" id="tank3-status" aria-live="polite"></p>
         </div>
         <div class="col-lg-3">
           <div
@@ -90,6 +95,7 @@
             style="width: 200px;height:200px; float:left"
           ></div>
           <h2>Tank 4</h2>
+          <p class="tank-status" id="tank4-status" aria-live="polite"></p>
         </div>
       </div>
     </div>
@@ -123,6 +129,7 @@
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="lib/createWaterBall-jquery.js"></script>
+    <script src="js/level-strategy.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
       //var x=30;
@@ -155,22 +162,22 @@
           )
         );
       }
-      var x = getQueryStringValue("tank1");
-      var y = getQueryStringValue("tank2");
-      var z = getQueryStringValue("tank3");
-      var w = getQueryStringValue("tank4");
-      $(".tank1").createWaterBall({
-        targetRange: x
-      });
-      $(".tank2").createWaterBall({
-        targetRange: y
-      });
-      $(".tank3").createWaterBall({
-        targetRange: z
-      });
-      $(".tank4").createWaterBall({
-        targetRange: w
-      });
+      // O Strategy encapsula a regra de classificação, evitando condicionais
+      // repetidas para cada reservatório.
+      function initializeTank(tankNumber) {
+        var rawLevel = getQueryStringValue("tank" + tankNumber);
+        var level = rawLevel === "" ? 50 : Number(rawLevel);
+        if (!Number.isFinite(level)) level = 50;
+        level = Math.max(0, Math.min(100, level));
+
+        var status = WaterLevelStrategy.classify(level, "standard");
+        $(".tank" + tankNumber).createWaterBall({ targetRange: level });
+        $("#tank" + tankNumber + "-status")
+          .text(status.label + " — " + level + "%")
+          .css("color", status.color);
+      }
+
+      [1, 2, 3, 4].forEach(initializeTank);
 
       var loadingEle = $(".loading");
       var loading_width = loadingEle.width(),
