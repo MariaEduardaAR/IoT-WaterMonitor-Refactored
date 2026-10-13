@@ -129,6 +129,7 @@
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="lib/createWaterBall-jquery.js"></script>
+    <script src="js/monitoring-observer.js"></script>
     <script src="js/tank-factory.js"></script>
     <script src="js/level-strategy.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -149,19 +150,34 @@
             : null;
      
     }*/
+    
+    // Factory cria os dados; Strategy classifica; Observer notifica as atualizações.
+    var tankObserver = new WaterMonitoringObserver();
 
-      // Factory centraliza a configuração de cada reservatório. Strategy classifica o nível.
-      function initializeTank(tankNumber) {
-        var tank = WaterTankFactory.create(tankNumber, window.location.search);
-        var status = WaterLevelStrategy.classify(tank.level, "standard");
+    // Observer responsável por atualizar a interface dos reservatórios.
+    tankObserver.subscribe(function (event) {
+      var status = WaterLevelStrategy.classify(event.level, "standard");
 
-        $(tank.selector).createWaterBall({ targetRange: tank.level });
-        $(tank.statusSelector)
-          .text(status.label + " — " + tank.level + "%")
-          .css("color", status.color);
-      }
+      $(event.selector).createWaterBall({ targetRange: event.level });
+      $(event.statusSelector)
+        .text(status.label + " — " + event.level + "%")
+        .css("color", status.color);
+    });
 
-      [1, 2, 3, 4].forEach(initializeTank);
+    function initializeTank(tankNumber) {
+      var tank = WaterTankFactory.create(tankNumber, window.location.search);
+
+      // Publica o nível do reservatório para os observadores inscritos.
+      tankObserver.notify({
+        tankNumber: tank.number,
+        level: tank.level,
+        selector: tank.selector,
+        statusSelector: tank.statusSelector
+      });
+    }
+
+    [1, 2, 3, 4].forEach(initializeTank);
+
 
       var loadingEle = $(".loading");
       var loading_width = loadingEle.width(),
