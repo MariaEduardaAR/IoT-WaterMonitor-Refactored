@@ -129,6 +129,7 @@
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="lib/createWaterBall-jquery.js"></script>
+    <script src="js/tank-factory.js"></script>
     <script src="js/level-strategy.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
@@ -149,31 +150,14 @@
      
     }*/
 
-      function getQueryStringValue(key) {
-        return decodeURIComponent(
-          window.location.search.replace(
-            new RegExp(
-              "^(?:.*[&\\?]" +
-                encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") +
-                "(?:\\=([^&]*))?)?.*$",
-              "i"
-            ),
-            "$1"
-          )
-        );
-      }
-      // O Strategy encapsula a regra de classificação, evitando condicionais
-      // repetidas para cada reservatório.
+      // Factory centraliza a configuração de cada reservatório. Strategy classifica o nível.
       function initializeTank(tankNumber) {
-        var rawLevel = getQueryStringValue("tank" + tankNumber);
-        var level = rawLevel === "" ? 50 : Number(rawLevel);
-        if (!Number.isFinite(level)) level = 50;
-        level = Math.max(0, Math.min(100, level));
+        var tank = WaterTankFactory.create(tankNumber, window.location.search);
+        var status = WaterLevelStrategy.classify(tank.level, "standard");
 
-        var status = WaterLevelStrategy.classify(level, "standard");
-        $(".tank" + tankNumber).createWaterBall({ targetRange: level });
-        $("#tank" + tankNumber + "-status")
-          .text(status.label + " — " + level + "%")
+        $(tank.selector).createWaterBall({ targetRange: tank.level });
+        $(tank.statusSelector)
+          .text(status.label + " — " + tank.level + "%")
           .css("color", status.color);
       }
 
