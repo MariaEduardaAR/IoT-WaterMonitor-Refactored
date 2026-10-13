@@ -1,4 +1,7 @@
-/* Observer (GoF): notifica os componentes inscritos sobre atualizações. */
+
+/*
+ * Observer (GoF): permite inscrever, remover e notificar observadores.
+ */
 (function (global) {
   "use strict";
 
@@ -7,7 +10,22 @@
   }
 
   WaterMonitoringObserver.prototype.subscribe = function (listener) {
-    this.listeners.push(listener);
+    if (typeof listener !== "function") {
+      throw new TypeError("O observador deve ser uma função.");
+    }
+
+    var self = this;
+
+    self.listeners.push(listener);
+
+    // Retorna uma função para cancelar a inscrição.
+    return function unsubscribe() {
+      var index = self.listeners.indexOf(listener);
+
+      if (index !== -1) {
+        self.listeners.splice(index, 1);
+      }
+    };
   };
 
   WaterMonitoringObserver.prototype.notify = function (event) {
