@@ -132,6 +132,7 @@
     <script src="js/monitoring-observer.js"></script>
     <script src="js/tank-factory.js"></script>
     <script src="js/level-strategy.js"></script>
+    <script src="js/monitoring-facade.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
       //var x=30;
@@ -152,31 +153,33 @@
     }*/
     
     // Factory cria os dados; Strategy classifica; Observer notifica as atualizações.
-    var tankObserver = new WaterMonitoringObserver();
+    
+      // Observer atualiza a interface quando recebe uma notificação.
+      var tankObserver = new WaterMonitoringObserver();
 
-    // Observer responsável por atualizar a interface dos reservatórios.
-    tankObserver.subscribe(function (event) {
-      var status = WaterLevelStrategy.classify(event.level, "standard");
+      tankObserver.subscribe(function (event) {
+        $(event.selector).createWaterBall({
+          targetRange: event.level
+        });
 
-      $(event.selector).createWaterBall({ targetRange: event.level });
-      $(event.statusSelector)
-        .text(status.label + " — " + event.level + "%")
-        .css("color", status.color);
-    });
-
-    function initializeTank(tankNumber) {
-      var tank = WaterTankFactory.create(tankNumber, window.location.search);
-
-      // Publica o nível do reservatório para os observadores inscritos.
-      tankObserver.notify({
-        tankNumber: tank.number,
-        level: tank.level,
-        selector: tank.selector,
-        statusSelector: tank.statusSelector
+        $(event.statusSelector)
+          .text(event.status.label + " — " + event.level + "%")
+          .css("color", event.status.color);
       });
-    }
 
-    [1, 2, 3, 4].forEach(initializeTank);
+      // Facade coordena Factory, Strategy e Observer.
+      var monitoring = new WaterMonitoringFacade(
+        WaterTankFactory,
+        WaterLevelStrategy,
+        tankObserver,
+        window.location.search
+      );
+
+      function initializeTank(tankNumber) {
+        monitoring.initializeTank(tankNumber);
+      }
+
+      [1, 2, 3, 4].forEach(initializeTank);
 
 
       var loadingEle = $(".loading");
