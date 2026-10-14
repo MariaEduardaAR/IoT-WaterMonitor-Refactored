@@ -1,0 +1,90 @@
+[33mcommit a54e786e13ac1b52a70da632f764b01d0387343d[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Nathalia Lima <limanathalia448@gmail.com>
+Date:   Mon Oct 12 23:27:49 2026 -0300
+
+    refactor: aplica Facade para coordenar o monitoramento
+
+ src/home.html               | 49 [32m++++++++++++++++++++++++[m[31m---------------------[m
+ src/js/monitoring-facade.js | 30 [32m+++++++++++++++++++++++++++[m
+ 2 files changed, 56 insertions(+), 23 deletions(-)
+
+[33mcommit 55e81c5ba633c785571870def80dd24863ecec7e[m
+Author: Maria Eduarda <eduardaalmeidarodrigues02@gmail.com>
+Date:   Mon Oct 12 23:00:29 2026 -0300
+
+    refactor: aplica Observer para notificacoes de nivel
+
+ src/home.html                 | 36 [32m++++++++++++++++++++++++++[m[31m----------[m
+ src/js/monitoring-observer.js | 20 [32m++++++++++++++++++++[m
+ 2 files changed, 46 insertions(+), 10 deletions(-)
+
+[33mcommit 6e2b042ffa91f75f13ee5c43e2b6abdb61993642[m
+Author: Nathalia Lima <limanathalia448@gmail.com>
+Date:   Mon Oct 12 22:28:08 2026 -0300
+
+    refactor: aplica Factory na configuracao dos reservatorios
+
+ README-REFATORACAO-02.md | 29 [32m+++++++++++++++++++++++++++++[m
+ src/home.html            | 30 [32m+++++++[m[31m-----------------------[m
+ src/js/tank-factory.js   | 31 [32m+++++++++++++++++++++++++++++++[m
+ 3 files changed, 67 insertions(+), 23 deletions(-)
+
+[33mcommit 6fda834cccd9ec6ccd028ac1187671df4f4ace5a[m
+Author: Maria Eduarda <eduardaalmeidarodrigues02@gmail.com>
+Date:   Mon Oct 12 14:17:05 2026 -0300
+
+    chore: registra versao original do sistema legado
+
+ README-REFATORACAO-01.md | 38 [32m++++++++++++++++++++++++++++++++++++++[m
+ src/home.html            | 39 [32m+++++++++++++++++++++++[m[31m----------------[m
+ src/js/level-strategy.js | 38 [32m++++++++++++++++++++++++++++++++++++++[m
+ 3 files changed, 99 insertions(+), 16 deletions(-)
+
+[33mcommit 3a1efd84e577b046934d5767f523d845e3fe94dc[m
+Author: Maria Eduarda <eduardaalmeidarodrigues02@gmail.com>
+Date:   Mon Oct 12 13:59:00 2026 -0300
+
+    chore: registra versao original do sistema legado
+
+ .github/ISSUE_TEMPLATE/bug_report.md               |    27 [32m+[m
+ .github/ISSUE_TEMPLATE/feature_request.md          |    20 [32m+[m
+ .github/PULL_REQUEST_TEMPLATE.md                   |    28 [32m+[m
+ .github/auto_assign.yml                            |    17 [32m+[m
+ .github/config.yml                                 |    45 [32m+[m
+ .github/weekly-digest.yml                          |     7 [32m+[m
+ CODE_OF_CONDUCT.md                                 |    43 [32m+[m
+ CONTRIBUTING.md                                    |    35 [32m+[m
+ LICENSE                                            |    21 [32m+[m
+ PROJECTS.md                                        |    29 [32m+[m
+ README.md                                          |   386 [32m+[m
+ _config.yml                                        |     4 [32m+[m
+ assets/Logo.svg                                    |   279 [32m+[m
+ assets/animatedtank.gif                            |   Bin [31m0[m -> [32m834129[m bytes
+ assets/css/style.scss                              |    15 [32m+[m
+ assets/facebook.png                                |   Bin [31m0[m -> [32m5500[m bytes
+ assets/linkedin.png                                |   Bin [31m0[m -> [32m5138[m bytes
+ assets/logo.gif                                    |   Bin [31m0[m -> [32m100831[m bytes
+ assets/rgsoc2020.png                               |   Bin [31m0[m -> [32m19072[m bytes
+ assets/twitter.png                                 |   Bin [31m0[m -> [32m6620[m bytes
+ assets/vinit-shahdeo.jpg                           |   Bin [31m0[m -> [32m96759[m bytes
+ docs/Bankend Intro - Water Monitoring System.pdf   |   Bin [31m0[m -> [32m620919[m bytes
+ docs/IoT Session 1.pdf                             |   Bin [31m0[m -> [32m298187[m bytes
+ docs/IoT_Session_2.pdf                             |   Bin [31m0[m -> [32m1019624[m bytes
+ docs/README.md                                     |    95 [32m+[m
+ docs/RGSOC_TEAMS.md                                |    29 [32m+[m
+ docs/Water Monitoring System.pdf                   |   Bin [31m0[m -> [32m2222847[m bytes
+ docs/Water level monitoring system.pdf             |   Bin [31m0[m -> [32m347001[m bytes
+ docs/_config.yml                                   |     4 [32m+[m
+ docs/logo.gif                                      |   Bin [31m0[m -> [32m100831[m bytes
+ .../Wireframe-desktop- tank-dashboard.pdf          | 56725 [32m+++++++++++++++++++[m
+ docs/wireframes/wireframe-login-mobile.pdf         |   Bin [31m0[m -> [32m467208[m bytes
+ .../wireframes/wireframe-mobile-tank-dashboard.pdf |   Bin [31m0[m -> [32m64571[m bytes
+ git-workflow.svg                                   |    12 [32m+[m
+ .../Screenshot 2019-12-31 at 9.06.14 PM.png        |   Bin [31m0[m -> [32m228163[m bytes
+ src/Firebase-interagtion.html                      |   313 [32m+[m
+ src/Water_level/Water_level.ino                    |    54 [32m+[m
+ src/data.json                                      |     6 [32m+[m
+ src/demo.html                                      |    79 [32m+[m
+ src/home.html                                      |   210 [32m+[m
+ src/lib/createWaterBall-jquery.js                  |   215 [32m+[m
+ 41 files changed, 58698 insertions(+)

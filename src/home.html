@@ -64,6 +64,14 @@
           overflow or when tank depletes.
         </p>
       </center>
+      <div
+          id="monitoring-alert"
+          role="alert"
+          aria-live="assertive"
+          style="display: none; padding: 12px; margin: 12px 0;
+                background: #ffe5e5; color: #a40000;
+                border: 1px solid #d9534f; border-radius: 4px;"
+        ></div>
       <div class="row">
         <div class="col-lg-3">
           <div
@@ -152,7 +160,6 @@
      
     }*/
     
-    // Factory cria os dados; Strategy classifica; Observer notifica as atualizações.
     
       // Observer atualiza a interface quando recebe uma notificação.
       var tankObserver = new WaterMonitoringObserver();
@@ -167,19 +174,46 @@
           .css("color", event.status.color);
       });
 
-      // Facade coordena Factory, Strategy e Observer.
-      var monitoring = new WaterMonitoringFacade(
-        WaterTankFactory,
-        WaterLevelStrategy,
-        tankObserver,
-        window.location.search
-      );
+      
+var monitoringObserver = new WaterMonitoringObserver();
 
-      function initializeTank(tankNumber) {
-        monitoring.initializeTank(tankNumber);
-      }
+monitoringObserver.subscribe(function (event) {
+  var alertElement = $("#monitoring-alert");
 
-      [1, 2, 3, 4].forEach(initializeTank);
+  if (event.type === "validation-error") {
+    alertElement
+      .text(event.message)
+      .show();
+
+    console.error(event.message);
+    return;
+  }
+
+  if (event.type === "tank-ready") {
+    var tank = event;
+    var status = tank.status;
+
+    $(tank.selector).createWaterBall({
+      targetRange: tank.level
+    });
+
+    $(tank.statusSelector)
+      .text(status.label + " — " + tank.level + "%")
+      .css("color", status.color);
+  }
+});
+
+var monitoringFacade = new WaterMonitoringFacade(
+  WaterTankFactory,
+  WaterLevelStrategy,
+  monitoringObserver,
+  window.location.search
+);
+
+[1, 2, 3, 4].forEach(function (tankNumber) {
+  monitoringFacade.initializeTank(tankNumber);
+});
+
 
 
       var loadingEle = $(".loading");

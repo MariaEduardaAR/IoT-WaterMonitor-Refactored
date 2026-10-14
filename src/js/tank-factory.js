@@ -1,6 +1,7 @@
+
 /*
- * Factory (GoF): centraliza a criação da configuração de cada reservatório.
- * A tela não precisa conhecer detalhes de seletores, parâmetros ou valores padrão.
+ * Factory (GoF): centraliza a configuração dos reservatórios.
+ * Preserva os valores informados para que a Strategy possa validá-los.
  */
 (function (global) {
   "use strict";
@@ -8,16 +9,30 @@
   function readLevel(search, tankNumber) {
     var params = new URLSearchParams(search || "");
     var raw = params.get("tank" + tankNumber);
-    var level = raw === null || raw.trim() === "" ? 50 : Number(raw);
 
-    if (!Number.isFinite(level)) level = 50;
-    return Math.max(0, Math.min(100, level));
+    // Quando o parâmetro não existe, utiliza o padrão de 50%.
+    if (raw === null) {
+      return 50;
+    }
+
+    // Não limitar valores inválidos: a Strategy deve validá-los.
+    if (raw.trim() === "") {
+      return NaN;
+    }
+
+    return Number(raw);
   }
 
   global.WaterTankFactory = {
     create: function (tankNumber, search) {
-      if (!Number.isInteger(tankNumber) || tankNumber < 1 || tankNumber > 4) {
-        throw new RangeError("Número de reservatório inválido: " + tankNumber);
+      if (
+        !Number.isInteger(tankNumber) ||
+        tankNumber < 1 ||
+        tankNumber > 4
+      ) {
+        throw new RangeError(
+          "Número de reservatório inválido: " + tankNumber
+        );
       }
 
       return {

@@ -1,6 +1,11 @@
 
 /*
+<<<<<<< HEAD
  * Observer (GoF): permite inscrever, remover e notificar observadores.
+=======
+ * Observer (GoF): notifica os componentes inscritos
+ * sobre eventos do monitoramento.
+>>>>>>> 488e83b (feat: atualiza monitoramento dos reservatorios)
  */
 (function (global) {
   "use strict";
@@ -14,6 +19,7 @@
       throw new TypeError("O observador deve ser uma função.");
     }
 
+<<<<<<< HEAD
     var self = this;
 
     self.listeners.push(listener);
@@ -24,6 +30,18 @@
 
       if (index !== -1) {
         self.listeners.splice(index, 1);
+=======
+    this.listeners.push(listener);
+
+    // Permite cancelar a inscrição.
+    var observer = this;
+
+    return function unsubscribe() {
+      var index = observer.listeners.indexOf(listener);
+
+      if (index !== -1) {
+        observer.listeners.splice(index, 1);
+>>>>>>> 488e83b (feat: atualiza monitoramento dos reservatorios)
       }
     };
   };
