@@ -23,7 +23,7 @@ Este projeto consiste na refatoração do sistema original, aplicando padrões d
 ## 3. Integrantes do projeto
 
 - **Eduarda Rodrigues** — GitHub: [@MariaEduardaAR](https://github.com/MariaEduardaAR)
-- **Nathalia [inserir sobrenome completo]** — GitHub: [inserir usuário do GitHub, se houver]
+- **Nathalia Lima** — GitHub: [@nathalia0902](https://github.com/nathalia0902)
 
 ## 4. Pré-requisitos
 
@@ -104,8 +104,7 @@ IoT-WaterMonitor-Refactored/
 │   │   └── monitoring-facade.js
 │   └── home.html
 ├── README.md
-├── README-REFATORACAO-01.md
-└── README-REFATORACAO-02.md
+└── README-refatorado.md
 ```
 
 ## 7. Repositório
